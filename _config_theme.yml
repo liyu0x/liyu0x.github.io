@@ -189,9 +189,9 @@ profile:
   gravatar: # Gravatar email address, if you enable Gravatar, your avatar config will be overriden
   author: 李鱼
   author_title: Software Engineer
-  author_description: 马来西亚理科大学计算机科学在读研究生
+  author_description: 马来西亚理科大学CS在读研究生
   location: Penang, Malaysia
-  follow: https://github.com/cofess
+  follow: https://github.com/liyu0x
   # Social Links
   social:
     links:
