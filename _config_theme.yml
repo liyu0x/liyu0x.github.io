@@ -31,7 +31,7 @@ site:
     width: 40
     height: 40
     url: ../images/logo.png
-  title: Hexo # 页面title
+  title: 副本 # 页面title
   favicon: /favicon.png
   board: <p>交流分享</p> # 站点公告
   copyright: false # 底部版权信息
