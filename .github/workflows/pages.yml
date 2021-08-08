@@ -25,6 +25,8 @@ jobs:
         run:  git clone https://github.com/cofess/hexo-theme-pure.git themes/pure
       - name: copy theme config
         run: cp -f _config_theme.yml  themes/pure/_config.yml
+      - name: copy theme image
+        run: cp -rf imgs themes/pure/images
       - name: Install Dependencies
         run: npm install
       - name: Build
