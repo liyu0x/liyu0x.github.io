@@ -26,7 +26,7 @@
 <meta property="og:description" content="经过30多天的学习, 我完成了日本作者川合秀实的&lt;30天自制操作系统&gt;的前28天, 考虑到后面的2天, 都是利用前28天累积的成果, 开发一些小软件, 例如计算器之类的, 所以我并没有完成第29天和第30天的内容. 总的来说, 这本书还是挺有难度的, 不仅仅在于汇编内容的理解, 而且作者的表达方式极其不友好. 前言这个系列的文章主要会讲文中的操作系统这么几个方面:  系统的启动 内容的">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-09-05T02:09:01.000Z">
-<meta property="article:modified_time" content="2021-09-05T03:55:09.499Z">
+<meta property="article:modified_time" content="2021-09-11T03:00:10.571Z">
 <meta property="article:author" content="LI YU">
 <meta property="article:tag" content="30天操作系统系列">
 <meta name="twitter:card" content="summary">
@@ -336,7 +336,7 @@
 </ol>
 <p>而我们在开始内容之前, 需要讲讲前置知识, 例如汇编指令, 硬件调用方式等.</p>
 <p>接下来的内容, 用于之后的文章内所需要的知识点的快速查询, 并且针对每个项目的更加深入的了解, 需要自行谷歌, 否则这里就变成了复制粘贴的工具书了.</p>
-<h2 id="汇编指令"><a href="#汇编指令" class="headerlink" title="汇编指令"></a>汇编指令</h2><p><font color='red'> 这部分指令仅仅针对作者的编译器, 虽然可能与其他<br>编译器通用, 但建议在把指令用于其他编译器之前, 先查询编译器自己的官方文档 </font></p>
+<h2 id="汇编指令"><a href="#汇编指令" class="headerlink" title="汇编指令"></a>汇编指令</h2><p><font color='red'> 这部分指令仅仅针对作者的编译器, 虽然可能与其他编译器通用, 但建议在把指令用于其他编译器之前, 先查询编译器自己的官方文档 </font></p>
 <h5 id="DB"><a href="#DB" class="headerlink" title="DB"></a>DB</h5><p><code>DB(data byte)</code>: 写入一个字节, 或者写入一个字符串(编译器会自行寻找字符对应的编码并且转换为对应的指令, 不用自己找字符编码对照表)</p>
 <h5 id="DW"><a href="#DW" class="headerlink" title="DW"></a>DW</h5><p><code>DW(data word)</code>: 写入双字节, 等同于16位</p>
 <h5 id="DD"><a href="#DD" class="headerlink" title="DD"></a>DD</h5><p><code>DD(data double-word)</code>: 写入四字节, 等同于32位</p>
@@ -383,7 +383,19 @@
 <h5 id="特殊用法-3"><a href="#特殊用法-3" class="headerlink" title="特殊用法"></a>特殊用法</h5><ol>
 <li>作为偏移地址使用， 通常与段寄存器结合使用</li>
 </ol>
-<h4 id="栈指针寄存器-SP-基址指针寄存器-BP-栈段寄存器-SS"><a href="#栈指针寄存器-SP-基址指针寄存器-BP-栈段寄存器-SS" class="headerlink" title="栈指针寄存器 SP | 基址指针寄存器 BP | 栈段寄存器 SS"></a>栈指针寄存器 SP | 基址指针寄存器 BP | 栈段寄存器 SS</h4><p><code>SP(stack pointer)</code>：栈指针寄存器</p>
+<h4 id="源变址寄存器-SI"><a href="#源变址寄存器-SI" class="headerlink" title="源变址寄存器 SI"></a>源变址寄存器 SI</h4><p><code>source index</code> 源变址寄存器, 两个变址寄存器之一,  一般与DS寄存器联用, 有自动增量和自动减量的功能.</p>
+<h4 id="目的变址寄存器-DI"><a href="#目的变址寄存器-DI" class="headerlink" title="目的变址寄存器 DI"></a>目的变址寄存器 DI</h4><p><code>destination index</code> 目的变址寄存器, 用来存放相对于目标地址的变址指针. 一般与ES寄存器联用, 有自动增量和自动减量的功能.</p>
+<h4 id="指令寄存器-IP"><a href="#指令寄存器-IP" class="headerlink" title="指令寄存器 IP"></a>指令寄存器 IP</h4><h3 id="常见的32位寄存器"><a href="#常见的32位寄存器" class="headerlink" title="常见的32位寄存器"></a>常见的32位寄存器</h3><p><code>EAX</code>, <code>ECX</code>, <code>EDX</code>, <code>EBX</code>, <code>ESP</code>, <code>EBP</code>, <code>ESI</code>, <code>EDI</code></p>
+<p>在16位寄存器前加一个<code>E</code>即可</p>
+<h3 id="栈相关寄存器"><a href="#栈相关寄存器" class="headerlink" title="栈相关寄存器"></a>栈相关寄存器</h3><h4 id="栈段寄存器-SS"><a href="#栈段寄存器-SS" class="headerlink" title="栈段寄存器 SS"></a>栈段寄存器 SS</h4><p><code>SS (stack segment)</code>: 栈段寄存器,  保存栈顶的段地址</p>
+<h4 id="栈指针寄存器-SP"><a href="#栈指针寄存器-SP" class="headerlink" title="栈指针寄存器 SP"></a>栈指针寄存器 SP</h4><p><code>SP(stack pointer)</code>：栈指针寄存器, 存放栈顶偏移地址</p>
+<p><font color='red'><code>SS:SP</code>总是指向栈顶地址</font></p>
+<h4 id="基址指针寄存器-BP"><a href="#基址指针寄存器-BP" class="headerlink" title="基址指针寄存器 BP"></a>基址指针寄存器 BP</h4><p><code>BP(base pointer)</code>: 基址寄存器, 通常用于保存进入函数时, <code>SP</code>的值</p>
+<h3 id="段寄存器"><a href="#段寄存器" class="headerlink" title="段寄存器"></a>段寄存器</h3><h4 id="附加段寄存器-ES"><a href="#附加段寄存器-ES" class="headerlink" title="附加段寄存器 ES"></a>附加段寄存器 ES</h4><p><code>ES(extra segment)</code>: 附加段寄存器, 通常在段寄存器不够用时使用.</p>
+<h4 id="代码段寄存器-CS"><a href="#代码段寄存器-CS" class="headerlink" title="代码段寄存器 CS"></a>代码段寄存器 CS</h4><p><code>CS(code segment)</code>: 代码段寄存器, 用来存放代码段区域的入口基地址.</p>
+<h4 id="栈段寄存器-SS-1"><a href="#栈段寄存器-SS-1" class="headerlink" title="栈段寄存器 SS"></a>栈段寄存器 SS</h4><p><code>SS (stack segment)</code>: 栈段寄存器,  保存栈顶的段地址</p>
+<h4 id="数据段寄存器-DS"><a href="#数据段寄存器-DS" class="headerlink" title="数据段寄存器 DS"></a>数据段寄存器 DS</h4><p><code>DS(data segment)</code>: 数据段寄存器, 存放数据, 对应的数据相当于C语言中的全局变量</p>
+<h4 id="FS-GS"><a href="#FS-GS" class="headerlink" title="FS GS"></a>FS GS</h4><p>用于访问线程信息</p>
 
       
     </div>
